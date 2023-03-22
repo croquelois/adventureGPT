@@ -2,9 +2,11 @@ function isEmpty(txt){
   return (txt.trim() == "");
 }
 
-let reChoice = /^\d+[\s\.\)]\s/;
+let reChoices = [
+  /^(Option )?\d+[\s\.\):]\s/
+];
 function isChoice(txt){
-  return reChoice.test(txt);
+  return reChoices.some(re => re.test(txt));
 }
 
 export function parseMessage(msg){

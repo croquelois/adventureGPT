@@ -1,0 +1,4 @@
+openai
+jsonpickle
+flask
+flask_cors

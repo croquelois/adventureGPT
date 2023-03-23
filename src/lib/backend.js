@@ -30,3 +30,11 @@ export async function startStory(apiKey, storyType){
   xhr.send(JSON.stringify({apiKey, storyType}));
   return await promiseOnAjaxReturn(xhr);
 }
+
+export async function continueStory(apiKey, storyType, story, choice){
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", backendUrl+"/continue");
+  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhr.send(JSON.stringify({apiKey, storyType, story, choice}));
+  return await promiseOnAjaxReturn(xhr);
+}

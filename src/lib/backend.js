@@ -38,3 +38,11 @@ export async function continueStory(apiKey, storyType, story, choice){
   xhr.send(JSON.stringify({apiKey, storyType, story, choice}));
   return await promiseOnAjaxReturn(xhr);
 }
+
+export async function imageStory(apiKey, storyType, story){
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", backendUrl+"/image");
+  xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhr.send(JSON.stringify({apiKey, storyType, story}));
+  return await promiseOnAjaxReturn(xhr);
+}

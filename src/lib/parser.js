@@ -3,7 +3,7 @@ function isEmpty(txt){
 }
 
 let reChoices = [
-  /^(Option )?\d+[\s\.\):]\s/
+  /^(Option )?(\d+|[a-zA-Z])[\s\.\):]\s/
 ];
 function isChoice(txt){
   return reChoices.some(re => re.test(txt));

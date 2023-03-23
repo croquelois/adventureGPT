@@ -54,4 +54,24 @@ def expand():
     story = chat.choices[0].message.content
     return Response(response=jsonpickle.encode({'status': 'ok', 'story': story}), status=200, mimetype="application/json")
 
+@app.route('/image', methods=['POST'])
+@cross_origin()
+def image():
+    print("Call openai GPT")
+    storyType = request.json.get("storyType")
+    openai.api_key = request.json.get("apiKey")
+    story = request.json.get("storyType")
+    chat = openai.ChatCompletion.create(
+          model="gpt-3.5-turbo",
+          messages=[
+                {"role": "user", "content": "write a page of a " + storyType + " story, and at the end give me 3 choices to continue the story"},
+                {"role": "assistant", "content": story},
+                {"role": "user", "content": "give a prompt to generate an image which illustrate this story"},
+            ]
+    )
+    print("Call returned")
+    print(chat)
+    prompt = chat.choices[0].message.content
+    return Response(response=jsonpickle.encode({'status': 'ok', 'prompt': prompt}), status=200, mimetype="application/json")
+
 app.run(host="127.0.0.1", port=5003)

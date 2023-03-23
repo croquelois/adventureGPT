@@ -1,5 +1,5 @@
 <script>
-  import {startStory, continueStory} from './lib/backend.js';
+  import {startStory, continueStory, imageStory} from './lib/backend.js';
   import {parseMessage} from './lib/parser.js';
   import { onMount } from 'svelte';
   
@@ -8,6 +8,7 @@
   let rawStory = null;
   let story = null;
   let error = null;
+  let prompt = null;
   let requestInFlight = 0;
   let choices = null;
   
@@ -39,6 +40,7 @@
     story = null;
     choices = null;
     rawStory = null;
+    prompt = null;
     try { 
       let res = await startStory(apiKey, storyType);
       console.log(res);
@@ -57,6 +59,7 @@
     let index = event.target.dataset.index;
     requestInFlight++;
     error = null;
+    prompt = null;
     try { 
       let res = await continueStory(apiKey, storyType, rawStory, choices[index]);
       console.log(res);
@@ -70,6 +73,25 @@
     requestInFlight--;
     parse(rawStory);
   }
+  
+  async function onImage(event){
+    let index = event.target.dataset.index;
+    requestInFlight++;
+    error = null;
+    prompt = null;
+    try { 
+      let res = await imageStory(apiKey, storyType, rawStory);
+      console.log(res);
+      if(res.error)
+        throw new Error(res.error);
+      prompt = res.prompt.trim();
+    } catch(err) {
+      console.log(err);
+      error = err.message;
+    }
+    requestInFlight--;
+  }
+  
 </script>
 
 <main>
@@ -107,10 +129,20 @@
           </div>
         </div>
       </div>
+      {#each (choices||[]) as choice,i}
+        <button type="button" class="w-100 my-1 btn btn-info" on:click={onNext} data-index={i}>{choice}</button>
+      {/each}
+      <button type="button" class="w-100 my-1 btn btn-success" on:click={onImage}>Image prompt</button>
     {/if}
-    {#each (choices||[]) as choice,i}
-      <button type="button" class="w-100 my-1 btn btn-info" on:click={onNext} data-index={i}>{choice}</button>
-    {/each}
+    {#if prompt}
+      <div class="row align-items-start g-0">
+        <div class="card text-bg-warning" style="align-items: normal">
+          <div class="card-body p-0">
+          <pre>{prompt}</pre>
+          </div>
+        </div>
+      </div>
+    {/if}
   </div>
 </main>
 

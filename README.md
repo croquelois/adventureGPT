@@ -5,8 +5,16 @@
 ## Run
 
 ```
+pip install -r requirements.txt
+python main.py
+```
+
+on another terminal:
+
+```
 npm install
 npm run dev
 ```
+
 
 connect via the browser to the address displayed

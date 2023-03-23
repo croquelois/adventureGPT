@@ -1,6 +1,8 @@
 # Adventure GPT
 
-![image](https://user-images.githubusercontent.com/1538314/227057655-351fd99a-fcab-429d-bbcf-db46f4f13c22.png)
+![image](https://user-images.githubusercontent.com/1538314/227077242-75639093-e589-4f0f-adff-ab87b37ce7e2.png)
+
+![image](https://user-images.githubusercontent.com/1538314/227077416-53a34366-988b-44a4-89d0-20d73f64209c.png)
 
 ## Run
 

@@ -1,7 +1,8 @@
 # Adventure GPT
 
-![image](https://user-images.githubusercontent.com/1538314/227077242-75639093-e589-4f0f-adff-ab87b37ce7e2.png)
-![image](https://user-images.githubusercontent.com/1538314/227077710-950dcd1e-e98c-4bb5-a812-db883c4ebdd5.png)
+Generate a story, with multiple choice of continuation. Also create an illustration for the story
+
+![image](https://user-images.githubusercontent.com/1538314/228096359-4c2c0e4e-74f7-4856-b8af-f47e9e5dc988.png)
 
 ## Run
 

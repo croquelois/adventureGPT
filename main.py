@@ -6,6 +6,7 @@ import os, uuid
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+model = "gpt-4" # "gpt-3.5-turbo" # "gpt-4-32k"
 
 def saveResponse(request, response):
     unique = uuid.uuid4();
@@ -22,7 +23,7 @@ def start():
     storyType = request.json.get("storyType")
     openai.api_key = request.json.get("apiKey")
     chat = openai.ChatCompletion.create(
-          model="gpt-3.5-turbo",
+          model=model,
           messages=[
                 {"role": "user", "content": "write a page of a " + storyType + " story, and at the end give me 3 choices to continue the story"},
             ]
@@ -42,7 +43,7 @@ def expand():
     story = request.json.get("storyType")
     choice = request.json.get("choice")
     chat = openai.ChatCompletion.create(
-          model="gpt-3.5-turbo",
+          model=model,
           messages=[
                 {"role": "user", "content": "write a page of a " + storyType + " story, and at the end give me 3 choices to continue the story"},
                 {"role": "assistant", "content": story},
@@ -62,7 +63,7 @@ def image():
     openai.api_key = request.json.get("apiKey")
     story = request.json.get("storyType")
     chat = openai.ChatCompletion.create(
-          model="gpt-3.5-turbo",
+          model=model,
           messages=[
                 {"role": "user", "content": "write a page of a " + storyType + " story, and at the end give me 3 choices to continue the story"},
                 {"role": "assistant", "content": story},
@@ -72,6 +73,15 @@ def image():
     print("Call returned")
     print(chat)
     prompt = chat.choices[0].message.content
-    return Response(response=jsonpickle.encode({'status': 'ok', 'prompt': prompt}), status=200, mimetype="application/json")
+    print("Call Dalle2")
+    img = openai.Image.create(
+          prompt=prompt,
+          n=1,
+          size="512x512"
+    )
+    print("Call returned")
+    print(img)
+    url = img["data"][0]["url"]
+    return Response(response=jsonpickle.encode({'status': 'ok', 'prompt': prompt, 'url': url}), status=200, mimetype="application/json")
 
 app.run(host="127.0.0.1", port=5003)

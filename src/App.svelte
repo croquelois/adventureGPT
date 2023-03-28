@@ -7,6 +7,7 @@
   let storyType = "science fiction";
   let rawStory = null;
   let story = null;
+  let imageUrl = null;
   let error = null;
   let prompt = null;
   let requestInFlight = 0;
@@ -41,6 +42,7 @@
     choices = null;
     rawStory = null;
     prompt = null;
+    imageUrl = null;
     try { 
       let res = await startStory(apiKey, storyType);
       console.log(res);
@@ -60,6 +62,7 @@
     requestInFlight++;
     error = null;
     prompt = null;
+    imageUrl = null;
     try { 
       let res = await continueStory(apiKey, storyType, rawStory, choices[index]);
       console.log(res);
@@ -85,6 +88,7 @@
       if(res.error)
         throw new Error(res.error);
       prompt = res.prompt.trim();
+      imageUrl = res.url;
     } catch(err) {
       console.log(err);
       error = err.message;
@@ -95,7 +99,7 @@
 </script>
 
 <main>
-  <div class="container text-center">
+  <div class="text-center">
     <div class="row align-items-start g-0">
       <div class="card" style="align-items: normal">
         <div class="card-body p-0">
@@ -124,9 +128,22 @@
     {#if story}
       <div class="row align-items-start g-0">
         <div class="card text-bg-light" style="align-items: normal">
-          <div class="card-body p-0">
-          <pre>{story}</pre>
-          </div>
+          {#if imageUrl}
+            <div class="row g-0">
+              <div style="width:512px">
+                <img src={imageUrl} alt={prompt} width="512" height="512">
+              </div>
+              <div class="col ms-2">
+                <div class="card-body p-0">
+                  <pre>{story}</pre>
+                </div>
+              </div>
+            </div>
+          {:else}
+            <div class="card-body p-0">
+              <pre>{story}</pre>
+            </div>
+          {/if}
         </div>
       </div>
       {#each (choices||[]) as choice,i}
@@ -134,7 +151,7 @@
       {/each}
       <button type="button" class="w-100 my-1 btn btn-success" on:click={onImage}>Image prompt</button>
     {/if}
-    {#if prompt}
+    {#if prompt && false}
       <div class="row align-items-start g-0">
         <div class="card text-bg-warning" style="align-items: normal">
           <div class="card-body p-0">
